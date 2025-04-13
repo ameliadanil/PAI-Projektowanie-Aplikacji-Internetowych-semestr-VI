@@ -27,4 +27,27 @@ router.get("/", async (req, res) => {
   }
 });
 
+// PUT /api/movies/:id – edycja filmu
+router.put("/:id", async (req, res) => {
+  const { tmdbId, title, poster, overview, releaseDate } = req.body;
+
+  try {
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      req.params.id,
+      { tmdbId, title, poster, overview, releaseDate },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({ error: "Film nie został znaleziony" });
+    }
+
+    res.json(updatedMovie);
+  } catch (err) {
+    console.error("❌ Błąd przy edytowaniu filmu:", err);
+    res.status(500).json({ error: "Nie udało się zaktualizować filmu" });
+  }
+});
+
 module.exports = router;
+

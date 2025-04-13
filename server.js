@@ -5,16 +5,20 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-// 💡 Dodaj te dwie linijki tutaj:
+// 📦 Import tras
 const movieRoutes = require("./routes/movieRoutes");
-app.use("/api/movies", movieRoutes);
+const reviewRoutes = require("./routes/reviewRoutes");
 
-// Testowa trasa
+// 🚀 Użycie tras
+app.use("/api/movies", movieRoutes);
+app.use("/api/reviews", reviewRoutes);
+
+// Testowa trasa główna
 app.get("/", (req, res) => {
   res.send("🎬 Filmoteka API działa!");
 });
 
-// Połączenie z MongoDB
+// 🔌 Połączenie z MongoDB i start serwera
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Połączono z bazą danych MongoDB");
@@ -23,4 +27,5 @@ mongoose.connect(process.env.MONGO_URI)
     });
   })
   .catch((err) => console.error("❌ Błąd połączenia z MongoDB:", err));
+
 
