@@ -8,8 +8,7 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String, // UID z Firebase – jako zwykły string
       required: true,
     },
     username: {
@@ -31,4 +30,8 @@ const reviewSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Review", reviewSchema);
+
+
+
+
 

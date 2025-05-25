@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Twój profil</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
+    }
+
+    .profile-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #1f1f2e;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(58, 94, 255, 0.3);
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-header h2 {
+      color: #77aaff;
+      margin-bottom: 10px;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #77aaff;
+      margin-top: 10px;
+    }
+
+    .profile-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-form input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #3a3a3a;
+      background-color: #2b2f40;
+      color: white;
+      min-width: 200px;
+    }
+
+    .profile-form button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #3a5eff, #77aaff);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .profile-form button:hover {
+      background: linear-gradient(135deg, #5c7bff, #a3c9f9);
+    }
+
+    .profile-section {
+      background-color: #151520;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .profile-section h3 {
+      margin-bottom: 16px;
+      color: #a3c9f9;
+      border-bottom: 1px solid #2e3b55;
+      padding-bottom: 6px;
+    }
+
+    .review-item,
+    .list-item {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .review-item button,
+    .list-item button {
+      margin-top: 6px;
+      background-color: #ff66a3;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.85em;
+      cursor: pointer;
+    }
+
+    .review-item button:hover {
+      background-color: #ff7fb8;
+    }
+
+    a.button-link {
+      display: inline-block;
+      margin-top: 8px;
+      background-color: #3a5eff;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85em;
+    }
+
+    a.button-link:hover {
+      background-color: #5c7bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h2>Twój profil</h2>
+      <p><strong>Email:</strong> <span id="userEmail">ameliadani111@gmail.com</span></p>
+      <p><strong>Nick:</strong> <span id="displayNick">Nie ustawiono</span></p>
+      <p><strong>Avatar:</strong></p>
+      <img id="avatarImg" src="https://via.placeholder.com/100" alt="avatar" class="profile-avatar" />
+    </div>
+
+    <div class="profile-form">
+      <input type="text" id="nickInput" placeholder="Twój nick" />
+      <input type="text" id="avatarInput" placeholder="Link do avatara" />
+      <button onclick="saveProfile()">💾 Zapisz profil</button>
+    </div>
+
+    <div class="profile-form">
+      <button onclick="logout()">🚪 Wyloguj</button>
+      <button onclick="exportReviews()">📤 Eksport recenzji</button>
+    </div>
+
+    <div class="profile-section">
+      <h3>Twoje recenzje</h3>
+      <div id="reviews"></div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Ulubione</h3>
+      <div id="favorites"></div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Do obejrzenia</h3>
+      <div id="watchlist"></div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Obejrzane</h3>
+      <div id="watched"></div>
+    </div>
+  </div>
+
+  <script>
+    const nickInput = document.getElementById("nickInput");
+    const avatarInput = document.getElementById("avatarInput");
+    const displayNick = document.getElementById("displayNick");
+    const avatarImg = document.getElementById("avatarImg");
+
+    function loadProfile() {
+      const nick = localStorage.getItem("nick") || "Nie ustawiono";
+      const avatar = localStorage.getItem("avatar") || "https://via.placeholder.com/100";
+      displayNick.textContent = nick;
+      avatarImg.src = avatar;
+    }
+
+    function saveProfile() {
+      const nick = nickInput.value.trim();
+      const avatar = avatarInput.value.trim();
+      if (nick) localStorage.setItem("nick", nick);
+      if (avatar) localStorage.setItem("avatar", avatar);
+      loadProfile();
+      alert("✅ Zapisano profil");
+    }
+
+    function logout() {
+      localStorage.clear();
+      alert("🚪 Wylogowano");
+      location.reload();
+    }
+
+    function exportReviews() {
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+      const blob = new Blob([JSON.stringify(reviews, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "recenzje.json";
+      link.click();
+    }
+
+    function displayList(id, label, items) {
+      const container = document.getElementById(id);
+      if (!items || items.length === 0) {
+        container.innerHTML = "<p>Brak pozycji.</p>";
+        return;
+      }
+
+      container.innerHTML = items.map(i => `
+        <div class="list-item">
+          <a href="film.html?id=${i}" class="button-link">${label} ${i}</a>
+        </div>
+      `).join("");
+    }
+
+    function displayReviews() {
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+      const container = document.getElementById("reviews");
+      if (!reviews.length) {
+        container.innerHTML = "<p>Brak recenzji.</p>";
+        return;
+      }
+
+      container.innerHTML = reviews.map((r, index) => `
+        <div class="review-item">
+          <strong>Film ID ${r.id}</strong><br/>
+          ⭐ ${r.rating}/10<br/>
+          ${r.text}<br/>
+          <small>${r.date || "?"}</small><br/>
+          <a href="film.html?id=${r.id}" class="button-link">🎬 Zobacz film</a>
+          <br/>
+          <button onclick="deleteReview(${index})">❌ Usuń recenzję</button>
+        </div>
+      `).join("");
+    }
+
+    function deleteReview(index) {
+      const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+      reviews.splice(index, 1);
+      localStorage.setItem("reviews", JSON.stringify(reviews));
+      displayReviews();
+    }
+
+    loadProfile();
+    displayReviews();
+    displayList("favorites", "❤️", JSON.parse(localStorage.getItem("favorites") || "[]"));
+    displayList("watchlist", "🎬", JSON.parse(localStorage.getItem("watchlist") || "[]"));
+    displayList("watched", "✅", JSON.parse(localStorage.getItem("watched") || "[]"));
+  </script>
+</body>
+</html>

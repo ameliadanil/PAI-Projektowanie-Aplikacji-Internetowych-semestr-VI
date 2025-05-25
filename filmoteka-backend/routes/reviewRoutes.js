@@ -9,8 +9,8 @@ const recalculateBadges = require("../utils/recalculateBadges");
 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-// ✅ Dodaj recenzję z oceną
-router.post("/:tmdbId", auth, async (req, res) => {
+// ✅ Dodawanie recenzji do filmu
+router.post("/movie/:tmdbId", auth, async (req, res) => {
   const { tmdbId } = req.params;
   const { comment, rating } = req.body;
 
@@ -39,18 +39,19 @@ router.post("/:tmdbId", auth, async (req, res) => {
       await movie.save();
     }
 
+    const user = await User.findOne({ uid: req.user.uid || req.user.userId });
+    if (!user) return res.status(404).json({ error: "Użytkownik nie został znaleziony." });
+
     const review = new Review({
       movie: movie._id,
-      user: req.user.userId,
-      username: req.user.username,
+      user: user.uid,
+      username: user.username,
       rating,
       comment,
     });
 
     await review.save();
-
-    const user = await User.findById(req.user.userId);
-    await recalculateBadges(user); // 🎖️ Oblicz odznaki
+    await recalculateBadges(user);
 
     res.status(201).json({ message: "📝 Recenzja dodana!", review });
   } catch (err) {
@@ -59,8 +60,8 @@ router.post("/:tmdbId", auth, async (req, res) => {
   }
 });
 
-// ✅ Pobierz wszystkie recenzje danego filmu
-router.get("/:tmdbId", async (req, res) => {
+// ✅ Pobieranie recenzji
+router.get("/movie/:tmdbId", async (req, res) => {
   const { tmdbId } = req.params;
 
   try {
@@ -75,79 +76,12 @@ router.get("/:tmdbId", async (req, res) => {
   }
 });
 
-// ✅ Pobierz średnią ocenę danego filmu
-router.get("/average/:tmdbId", async (req, res) => {
-  const { tmdbId } = req.params;
-
-  try {
-    const movie = await Movie.findOne({ tmdbId });
-    if (!movie) return res.status(404).json({ error: "Film nie został znaleziony." });
-
-    const reviews = await Review.find({ movie: movie._id });
-
-    if (reviews.length === 0) {
-      return res.json({ averageRating: null, total: 0 });
-    }
-
-    const sum = reviews.reduce((acc, curr) => acc + (curr.rating || 0), 0);
-    const avg = (sum / reviews.length).toFixed(1);
-
-    res.json({ averageRating: avg, total: reviews.length });
-  } catch (err) {
-    console.error("❌ Błąd przy liczeniu średniej oceny:", err.message);
-    res.status(500).json({ error: "Błąd serwera przy liczeniu oceny." });
-  }
-});
-
-// ✅ Edytuj recenzję użytkownika
-router.put("/:reviewId", auth, async (req, res) => {
-  const { reviewId } = req.params;
-  const { comment, rating } = req.body;
-
-  if (!comment || !rating) {
-    return res.status(400).json({ error: "Komentarz i ocena są wymagane." });
-  }
-
-  try {
-    const review = await Review.findById(reviewId);
-    if (!review) return res.status(404).json({ error: "Recenzja nie została znaleziona." });
-
-    if (review.user.toString() !== req.user.userId) {
-      return res.status(403).json({ error: "Brak uprawnień do edycji tej recenzji." });
-    }
-
-    review.comment = comment;
-    review.rating = rating;
-    await review.save();
-
-    res.json({ message: "✏️ Recenzja zaktualizowana", review });
-  } catch (err) {
-    console.error("❌ Błąd przy edytowaniu recenzji:", err.message);
-    res.status(500).json({ error: "Błąd serwera przy edycji recenzji." });
-  }
-});
-
-// ✅ Usuń recenzję użytkownika
-router.delete("/:reviewId", auth, async (req, res) => {
-  const { reviewId } = req.params;
-
-  try {
-    const review = await Review.findById(reviewId);
-    if (!review) return res.status(404).json({ error: "Recenzja nie została znaleziona." });
-
-    if (review.user.toString() !== req.user.userId) {
-      return res.status(403).json({ error: "Brak uprawnień do usunięcia tej recenzji." });
-    }
-
-    await Review.deleteOne({ _id: reviewId });
-    res.json({ message: "🗑 Recenzja została usunięta." });
-  } catch (err) {
-    console.error("❌ Błąd przy usuwaniu recenzji:", err.message);
-    res.status(500).json({ error: "Błąd serwera przy usuwaniu recenzji." });
-  }
-});
-
 module.exports = router;
+
+
+
+
+
 
 
 

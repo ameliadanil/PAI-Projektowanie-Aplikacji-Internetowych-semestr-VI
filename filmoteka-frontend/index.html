@@ -1,13 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filmoteka</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="js/script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Filmoteka</h1>
+    <div class="header-tools">
+      <input type="text" id="searchTitle" placeholder="Tytuł" />
+      <input type="text" id="searchActor" placeholder="Aktor" />
+      <input type="number" id="searchYear" placeholder="Rok" min="1900" max="2099" />
+      <select id="searchGenre">
+        <option value="">Gatunek</option>
+      </select>
+      <button id="searchBtn">Szukaj</button>
+      <button onclick="window.location.href='listy.html'">❤️</button>
+      <button onclick="window.location.href='profil.html'">👤</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-wrapper">
+      <div class="section-card">
+        <h2>Zaloguj się</h2>
+        <input type="email" id="loginEmail" placeholder="Email" />
+        <input type="password" id="loginPassword" placeholder="Hasło" />
+        <button onclick="login()">Zaloguj</button>
+      </div>
+
+      <div class="section-card">
+        <h2>Zarejestruj się</h2>
+        <input type="email" id="registerEmail" placeholder="Email" />
+        <input type="password" id="registerPassword" placeholder="Hasło" />
+        <button onclick="register()">Zarejestruj</button>
+      </div>
+    </div>
+
+    <section id="results"></section>
+  </main>
+</body>
 </html>

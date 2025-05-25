@@ -18,7 +18,7 @@ const commentRoutes = require("./routes/commentRoutes");
 const tmdbRoutes = require("./routes/tmdbRoutes");
 const userRoutes = require("./routes/userRoutes");
 const userActionsRoutes = require("./routes/userActions");
-const userMovieListRoutes = require("./routes/userMovieListRoutes"); // ✅ NOWOŚĆ
+const userMovieListRoutes = require("./routes/userMovieListRoutes");
 
 // 🚀 Użycie tras
 app.use("/api/movies", movieRoutes);
@@ -28,26 +28,28 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/user", userActionsRoutes);
-app.use("/api/usermovielist", userMovieListRoutes); // ✅ NOWOŚĆ
+app.use("/api/usermovielist", userMovieListRoutes);
 
 // 🧪 Trasa testowa
 app.get("/", (req, res) => {
   res.send("🎬 Filmoteka API działa!");
 });
 
-// 🔌 Połączenie z MongoDB i start serwera
-console.log("🔑 MONGO_URI:", process.env.MONGO_URI); // DEBUG: sprawdzamy czy Render widzi zmienną
-
-mongoose.connect(process.env.MONGO_URI)
+// 🔌 Połączenie z MongoDB i uruchomienie serwera
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ Połączono z bazą danych MongoDB");
 
-    const PORT = process.env.PORT || 5000; // ⬅️ KLUCZOWA LINIJKA dla Rendera
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`🚀 Serwer działa na porcie ${PORT}`);
     });
   })
-  .catch((err) => console.error("❌ Błąd połączenia z MongoDB:", err));
+  .catch((err) => {
+    console.error("❌ Błąd połączenia z MongoDB:", err.message);
+  });
+
 
 
 

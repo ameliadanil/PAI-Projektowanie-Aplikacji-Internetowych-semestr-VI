@@ -1,0 +1,121 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0e0e1b;
+  color: #ffffff;
+  margin: 0;
+  padding: 20px;
+}
+
+/* 🔙 Powrót */
+.back-link {
+  color: #7db1ff;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* 🎬 Karta filmu */
+.film-card {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  padding: 20px;
+}
+
+.film-card h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #7db1ff;
+}
+
+.film-card img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.film-card p {
+  line-height: 1.6;
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+/* 📝 Recenzje */
+.review-section {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  padding: 20px;
+}
+
+.review-section h2 {
+  color: #7db1ff;
+  margin-bottom: 15px;
+}
+
+#ratingInput, #reviewInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  resize: vertical;
+  font-size: 1rem;
+  background-color: #2a2a3d;
+  color: white;
+  margin-bottom: 10px;
+}
+
+#saveReviewBtn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #7db1ff;
+  border: none;
+  color: black;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#saveReviewBtn:hover {
+  background-color: #5596f6;
+}
+
+/* 💬 Lista recenzji */
+#reviewList {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.review-item {
+  background-color: #2c2c3c;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.review-item button {
+  background-color: #7db1ff;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.review-item button:hover {
+  background-color: #5596f6;
+}
