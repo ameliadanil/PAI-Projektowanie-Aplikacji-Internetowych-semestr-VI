@@ -44,7 +44,6 @@ Użytkownicy **premium** mają dostęp do:
 - Listy filmów:
   - ❤️ Ulubione
   - 🎞️ Do obejrzenia
-  - ✅ Obejrzane
 - Widok profilu z aktywnością użytkownika
 
 ## 🚀 Uruchamianie lokalnie
