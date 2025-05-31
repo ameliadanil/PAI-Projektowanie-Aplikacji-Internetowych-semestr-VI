@@ -2,7 +2,7 @@
 
 Aplikacja webowa do dodawania, oceniania i przeglądania filmów oraz recenzji innych użytkowników. Projekt zaliczeniowy na przedmiot **Projektowanie Aplikacji Internetowych** (WSB Merito, lato 2025).
 
-## 👥 Autorzy
+## 👥 Autor
 - **Amelia Danił** – Backend, Bazy danych, Frontend, UI/UX
 
 ## 📌 Opis
